@@ -14,10 +14,13 @@ void Set_RGB_LED(void);
 void Display_RGB_Values(void);
 void Set_Color_ADC(void);
 void Display_Temperature(void);
+void Measure_Temperature(void);
 
 uint32_t rgb[3];
 uint32_t color_selector = 0;
 uint32_t adc_data[1];
+float temperature;
+u_int8_t measure_temperature = 0;
 
 int main(void) {
 
@@ -29,6 +32,7 @@ int main(void) {
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_TIM4_Init();
   MX_ADC1_Init();
 
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
@@ -37,6 +41,7 @@ int main(void) {
 
   HAL_TIM_Base_Start(&htim2);
   HAL_TIM_Base_Start(&htim3);
+  HAL_TIM_Base_Start_IT(&htim4);
 
   HAL_ADC_Start_DMA(&hadc1, adc_data, 1);
 
@@ -50,7 +55,7 @@ int main(void) {
     Set_Color_ADC();
     Set_RGB_LED();
     Display_RGB_Values();
-    Display_Temperature();
+    Measure_Temperature();
 
     HAL_Delay(1);
 
@@ -96,14 +101,21 @@ void Display_RGB_Values(void) {
 
 }
 
+void Measure_Temperature(void) {
+
+  if (measure_temperature) {
+    ds18b20_Get_Temperature(&temperature);
+    Display_Temperature();
+    measure_temperature = 0;
+  }
+
+}
+
 void Display_Temperature(void) {
 
-  float temperature1;
   char buffer[16];
 
-  ds18b20_Get_Temperature(&temperature1);
-
-  sprintf(buffer, "Temp 1: %.1fC", temperature1);
+  sprintf(buffer, "Temp 1: %.1fC", temperature);
   ssd1306_SetCursor(2, 25);
   ssd1306_WriteString(buffer, Font_7x10, White);
   ssd1306_UpdateScreen();
@@ -121,6 +133,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
   } else {
     __NOP();
+  }
+
+}
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+
+  if(htim == &htim4) {
+    measure_temperature = 1;
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
   }
 
 }

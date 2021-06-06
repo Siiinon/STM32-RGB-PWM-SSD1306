@@ -86,7 +86,7 @@ void ds18b20_Get_Temperature(float *temperature) {
 	HAL_Delay(1);
 	DS18B20_Write(0xCC);  // skip ROM
 	DS18B20_Write(0x44);  // convert t
-	HAL_Delay(800);
+	HAL_Delay(5);
 
 	DS18B20_Start();
   HAL_Delay(1);
