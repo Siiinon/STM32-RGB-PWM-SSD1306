@@ -72,9 +72,9 @@ void Print_Core_Freq(void) {
 }
 
 void Set_RGB_LED(void) {
-	htim1.Instance->CCR2 = rgb[0];
-	htim1.Instance->CCR3 = rgb[1];
-	htim1.Instance->CCR4 = rgb[2];
+  htim1.Instance->CCR2 = rgb[0];
+  htim1.Instance->CCR3 = rgb[1];
+  htim1.Instance->CCR4 = rgb[2];
 }
 
 void Set_Color_ADC(void) {
