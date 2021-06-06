@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "main.h": "c",
+        "ds18b12_conf.h": "c",
+        "stm32f4xx_hal_gpio.h": "c",
+        "stm32f4xx_hal.h": "c",
+        "i2c.h": "c",
+        "ssd1306.h": "c",
+        "gpio.h": "c",
+        "tim.h": "c"
+    }
+}

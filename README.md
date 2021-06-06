@@ -9,6 +9,7 @@ Some of the features explored in this project are:
 - Use ADC with Timers via DMA (to read 10K Potentiometer)
 - Control SSD1306 (128x64) via I2C
 - Interface with PUSH buttons via hardware interrupts
+- Reading Temperature using DS128B20 sensor
 
 #
 

@@ -5,7 +5,7 @@
 #include "tim.h"
 #include "gpio.h"
 #include "ssd1306.h"
-#include "ssd1306_tests.h"
+#include "ds18b20.h"
 #include <stdio.h>
 
 void SystemClock_Config(void);
@@ -13,6 +13,7 @@ void Print_Core_Freq(void);
 void Set_RGB_LED(void);
 void Display_RGB_Values(void);
 void Set_Color_ADC(void);
+void Display_Temperature(void);
 
 uint32_t rgb[3];
 uint32_t color_selector = 0;
@@ -27,6 +28,7 @@ int main(void) {
   MX_I2C1_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
   MX_ADC1_Init();
 
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
@@ -34,6 +36,8 @@ int main(void) {
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4);
 
   HAL_TIM_Base_Start(&htim2);
+  HAL_TIM_Base_Start(&htim3);
+
   HAL_ADC_Start_DMA(&hadc1, adc_data, 1);
 
   ssd1306_Init();
@@ -46,6 +50,7 @@ int main(void) {
     Set_Color_ADC();
     Set_RGB_LED();
     Display_RGB_Values();
+    Display_Temperature();
 
     HAL_Delay(1);
 
@@ -54,7 +59,7 @@ int main(void) {
 }
 
 void Print_Core_Freq(void) {
-  char buffer[16];
+  char buffer[32];
   sprintf(buffer, "Core Freq: %luMHz", HAL_RCC_GetHCLKFreq() / 1000000);
   ssd1306_SetCursor(2, 0);
   ssd1306_WriteString(buffer, Font_7x10, White);
@@ -89,6 +94,20 @@ void Display_RGB_Values(void) {
 
   ssd1306_UpdateScreen();
 
+}
+
+void Display_Temperature(void) {
+
+  float temperature = 0;
+  char buffer[16];
+
+  ds18b20_Get_Temperature(&temperature);
+
+  sprintf(buffer, "Temp: %.1fC", temperature);
+  ssd1306_SetCursor(2, 25);
+  ssd1306_WriteString(buffer, Font_7x10, White);
+  ssd1306_UpdateScreen();
+  
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
