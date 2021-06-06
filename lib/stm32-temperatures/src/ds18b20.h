@@ -16,17 +16,9 @@
 
 _BEGIN_STD_C
 
-#include "ds18b20_conf.h"
+#include "stm32_temperatures_common.h"
 
-#if defined(STM32F4)
-#include "stm32f4xx_hal.h"
-#else
-#error "DS18B12 library was tested only on STM32F4 MCU families!"
-#endif
-
-#ifndef DS18B20_TIMER
-#define DS18B20_TIMER htim1
-#endif 
+#if defined(DS18B20_ENABLED)
 
 #ifndef DS18B20_PORT
 #define DS18B20_PORT GPIOA
@@ -36,9 +28,9 @@ _BEGIN_STD_C
 #define DS18B20_PIN GPIO_PIN_3
 #endif
 
-extern TIM_HandleTypeDef DS18B20_TIMER;
-
 void ds18b20_Get_Temperature(float *temperature);
+
+#endif
 
 _END_STD_C
 

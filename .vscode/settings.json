@@ -7,6 +7,9 @@
         "i2c.h": "c",
         "ssd1306.h": "c",
         "gpio.h": "c",
-        "tim.h": "c"
+        "tim.h": "c",
+        "ds18b20.h": "c",
+        "dht22.h": "c",
+        "stm32_temperatures_common.h": "c"
     }
 }

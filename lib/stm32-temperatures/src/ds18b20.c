@@ -1,32 +1,8 @@
 
 #include "ds18b20.h"
 
-void delay(uint16_t time) {
-	
-  __HAL_TIM_SET_COUNTER(&DS18B20_TIMER, 0);
-  while ((__HAL_TIM_GET_COUNTER(&DS18B20_TIMER))<time);
 
-}
-
-void Set_Pin_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
-
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	GPIO_InitStruct.Pin = GPIO_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
-
-}
-
-void Set_Pin_Input(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
-
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	GPIO_InitStruct.Pin = GPIO_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
-
-}
+#if defined(DS18B20_ENABLED)
 
 uint8_t DS18B20_Start(void) {
 
@@ -93,7 +69,7 @@ uint8_t DS18B20_Read(void) {
 		if (HAL_GPIO_ReadPin (DS18B20_PORT, DS18B20_PIN)) {  // if the pin is HIGH
 			value |= 1<<i;  // read = 1
 		}
-    
+
 		delay (50);  // wait for 60 us
 	}
 
@@ -124,3 +100,5 @@ void ds18b20_Get_Temperature(float *temperature) {
 	*temperature = (float) temp / 16;
 
 }
+
+#endif

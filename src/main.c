@@ -98,12 +98,12 @@ void Display_RGB_Values(void) {
 
 void Display_Temperature(void) {
 
-  float temperature = 0;
+  float temperature1;
   char buffer[16];
 
-  ds18b20_Get_Temperature(&temperature);
+  ds18b20_Get_Temperature(&temperature1);
 
-  sprintf(buffer, "Temp: %.1fC", temperature);
+  sprintf(buffer, "Temp 1: %.1fC", temperature1);
   ssd1306_SetCursor(2, 25);
   ssd1306_WriteString(buffer, Font_7x10, White);
   ssd1306_UpdateScreen();
