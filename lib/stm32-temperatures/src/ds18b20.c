@@ -58,7 +58,7 @@ uint8_t DS18B20_Read(void) {
 
   Set_Pin_Input(DS18B20_PORT, DS18B20_PIN);
 
-  for (int i=0;i<8;i++) {
+  for (int i=0; i<8; i++) {
 
     Set_Pin_Output(DS18B20_PORT, DS18B20_PIN);   // set as output
 
@@ -66,11 +66,11 @@ uint8_t DS18B20_Read(void) {
     delay(1);  // wait for > 1us
 
     Set_Pin_Input(DS18B20_PORT, DS18B20_PIN);  // set as input
-    if (HAL_GPIO_ReadPin (DS18B20_PORT, DS18B20_PIN)) {  // if the pin is HIGH
+    if (HAL_GPIO_ReadPin(DS18B20_PORT, DS18B20_PIN)) {  // if the pin is HIGH
       value |= 1<<i;  // read = 1
     }
 
-    delay (50);  // wait for 60 us
+    delay(50);  // wait for 60 us
   }
 
   return value;
